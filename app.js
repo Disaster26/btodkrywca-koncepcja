@@ -13,6 +13,7 @@
     $$('#nav a').forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('menu-open');burger.setAttribute('aria-expanded','false')})});
   }
 
+  function fv(el){var c=el.firstElementChild;while(c&&c.hidden)c=c.nextElementSibling;return c}
   /* przesuwane rzędy: palec natywnie, mysz przeciąganiem, strzałki */
   function rail(el,onMove){
     var down=false,sx=0,sl=0,moved=false;
@@ -29,7 +30,7 @@
     window.addEventListener('pointerup',function(){
       if(!down)return;down=false;
       if(moved){
-        var w=el.firstElementChild?el.firstElementChild.getBoundingClientRect().width+parseFloat(getComputedStyle(el).columnGap||0):el.clientWidth;
+        var f0=fv(el);var w=f0?f0.getBoundingClientRect().width+parseFloat(getComputedStyle(el).columnGap||0):el.clientWidth;
         var i=Math.round(el.scrollLeft/w);
         el.classList.remove('drag');
         el.scrollTo({left:i*w,behavior:'smooth'});
@@ -41,7 +42,7 @@
     if(onMove)el.addEventListener('scroll',onMove,{passive:true});
   }
   function step(el,dir){
-    var c=el.firstElementChild;if(!c)return;
+    var c=fv(el);if(!c)return;
     var w=c.getBoundingClientRect().width+parseFloat(getComputedStyle(el).columnGap||0);
     el.scrollBy({left:dir*w,behavior:'smooth'});
   }
@@ -54,15 +55,144 @@
     rail(el,upd);upd();window.addEventListener('resize',upd);
   });
 
-  /* galeria na karcie wyjazdu */
+  /* galeria na karcie wyjazdu: dowolna liczba zdjęć, licznik i miniatury budowane automatycznie */
   var gal=$('#gal');
   if(gal){
-    var cnt=$('#galc'),tot=gal.children.length;
-    var upd=function(){var i=Math.round(gal.scrollLeft/gal.clientWidth);cnt.textContent=(i+1)+' / '+tot};
-    rail(gal,upd);
+    var cnt=$('#galc'),figs=Array.prototype.slice.call(gal.children),tot=figs.length,th=$('#thumbs');
+    var idx=function(){return Math.round(gal.scrollLeft/gal.clientWidth)};
+    var upd=function(){var i=idx();cnt.textContent=(i+1)+' / '+tot;if(th)$$('button',th).forEach(function(b,k){b.classList.toggle('on',k===i)})};
+    if(th){
+      if(tot<2)th.remove();
+      else figs.forEach(function(f,k){
+        var im=$('img',f),b=document.createElement('button');
+        b.type='button';b.setAttribute('aria-label','Zdjęcie '+(k+1));
+        b.innerHTML='<img src="'+im.getAttribute('src')+'" alt="" loading="lazy">';
+        b.addEventListener('click',function(){gal.scrollTo({left:k*gal.clientWidth,behavior:'smooth'})});
+        th.appendChild(b);
+      });
+    }
+    if(tot<2){$$('.gal .ga').forEach(function(b){b.hidden=true});cnt.hidden=true}
+    rail(gal,upd);upd();
     $('.gal .ga.p').addEventListener('click',function(){gal.scrollBy({left:-gal.clientWidth,behavior:'smooth'})});
     $('.gal .ga.n').addEventListener('click',function(){gal.scrollBy({left:gal.clientWidth,behavior:'smooth'})});
   }
+
+  /* zakładki jednodniowe / wielodniowe + filtr Polska / zagranica */
+  $$('.tabs-row[data-filter]').forEach(function(row){
+    var box=document.getElementById(row.getAttribute('data-filter'));if(!box)return;
+    var empty=$('[data-empty="'+box.id+'"]');
+    var kind='jedno',kraj='all';
+    if(/wielo/.test(location.hash))kind='wielo';
+    function apply(){
+      var n=0;
+      Array.prototype.forEach.call(box.children,function(c){
+        var ok=c.getAttribute('data-kind')===kind&&(kraj==='all'||c.getAttribute('data-kraj')===kraj);
+        c.hidden=!ok;if(ok)n++;
+      });
+      $$('.tabs button',row).forEach(function(b){b.setAttribute('aria-selected',b.getAttribute('data-kind')===kind?'true':'false')});
+      $$('.flt button',row).forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-kraj')===kraj?'true':'false')});
+      if(empty)empty.classList.toggle('on',n===0);
+      box.style.display=n===0?'none':'';
+      box.scrollLeft=0;
+      box.dispatchEvent(new Event('scroll'));
+    }
+    $$('.tabs button',row).forEach(function(b){b.addEventListener('click',function(){kind=b.getAttribute('data-kind');apply()})});
+    $$('.flt button',row).forEach(function(b){b.addEventListener('click',function(){kraj=b.getAttribute('data-kraj');apply()})});
+    apply();
+  });
+
+  /* okno "Zapytaj o wyjazd" */
+  var ask=$('#ask');
+  if(ask){
+    var openAsk=function(trip){
+      ask.classList.remove('sent');
+      var f=$('#askf');f.reset();$$('.err',f).forEach(function(x){x.classList.remove('err')});
+      $('#ask-trip').value=trip||'';
+      document.body.classList.remove('menu-open');if(burger)burger.setAttribute('aria-expanded','false');
+      if(typeof ask.showModal==='function')ask.showModal();else ask.setAttribute('open','');
+      document.documentElement.style.overflow='hidden';
+    };
+    $$('[data-ask]').forEach(function(b){b.addEventListener('click',function(e){e.preventDefault();openAsk(b.getAttribute('data-ask'))})});
+    $$('[data-close]',ask).forEach(function(b){b.addEventListener('click',function(){ask.close?ask.close():ask.removeAttribute('open')})});
+    ask.addEventListener('close',function(){document.documentElement.style.overflow=''});
+    ask.addEventListener('click',function(e){if(e.target===ask)ask.close()});
+    $('#askf').addEventListener('submit',function(e){
+      e.preventDefault();var ok=true,first=null;
+      $$('[required]',this).forEach(function(i){var b=!i.value.trim();i.parentNode.classList.toggle('err',b);if(b){ok=false;first=first||i}});
+      if(!ok){first.focus();return}
+      ask.classList.add('sent');
+    });
+    $('#askf').addEventListener('input',function(e){e.target.parentNode.classList.remove('err')});
+  }
+
+  /* katalog PDF: PDF.js wczytywany dopiero, gdy podgląd zbliża się do ekranu */
+  var viewers=$$('.viewer[data-pdf]');
+  if(viewers.length){
+    var PDFJS='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
+    var loading=null;
+    var lib=function(){
+      if(loading)return loading;
+      loading=new Promise(function(res,rej){
+        var s=document.createElement('script');s.src=PDFJS+'pdf.min.js';
+        s.onload=function(){window.pdfjsLib.GlobalWorkerOptions.workerSrc=PDFJS+'pdf.worker.min.js';res(window.pdfjsLib)};
+        s.onerror=rej;document.head.appendChild(s);
+      });
+      return loading;
+    };
+    var init=function(v){
+      var stage=$('.v-stage',v),cv=$('canvas',v),ld=$('.v-load',v),pg=$('.v-pg',v),tt=$('.v-tot',v),bp=$('.ga.p',v),bn=$('.ga.n',v);
+      var doc=null,cur=1,busy=false,want=0;
+      var draw=function(n){
+        if(!doc)return;
+        if(busy){want=n;return}
+        busy=true;cur=n;pg.textContent=n;bp.disabled=n<=1;bn.disabled=n>=doc.numPages;
+        doc.getPage(n).then(function(p){
+          var cs=getComputedStyle(stage);
+          var W=stage.clientWidth-parseFloat(cs.paddingLeft)-parseFloat(cs.paddingRight);
+          var H=stage.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom);
+          var v1=p.getViewport({scale:1}),sc=Math.min(W/v1.width,H/v1.height),dpr=Math.min(window.devicePixelRatio||1,2);
+          var vp=p.getViewport({scale:sc*dpr});
+          cv.width=vp.width;cv.height=vp.height;cv.style.width=Math.floor(vp.width/dpr)+'px';cv.style.height=Math.floor(vp.height/dpr)+'px';
+          return p.render({canvasContext:cv.getContext('2d'),viewport:vp}).promise;
+        }).then(function(){ld.hidden=true;busy=false;if(want){var w=want;want=0;draw(w)}},function(){busy=false});
+      };
+      lib().then(function(pdfjs){return pdfjs.getDocument(v.getAttribute('data-pdf')).promise}).then(function(d){
+        doc=d;tt.textContent=d.numPages;draw(1);
+      }).catch(function(){ld.textContent='Nie udało się wczytać podglądu. Skorzystaj z przycisku „Pobierz katalog”.'});
+      bp.addEventListener('click',function(){if(cur>1)draw(cur-1)});
+      bn.addEventListener('click',function(){if(doc&&cur<doc.numPages)draw(cur+1)});
+      var sx=null;
+      stage.addEventListener('pointerdown',function(e){if(e.target.closest('.ga'))return;sx=e.clientX});
+      stage.addEventListener('pointerup',function(e){if(sx===null)return;var dx=e.clientX-sx;sx=null;if(Math.abs(dx)>40){if(dx<0)bn.click();else bp.click()}});
+      stage.addEventListener('pointercancel',function(){sx=null});
+      var rt;window.addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){draw(cur)},200)});
+    };
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){io.unobserve(x.target);init(x.target)}})},{rootMargin:'400px 0px'});
+      viewers.forEach(function(v){io.observe(v)});
+    }else viewers.forEach(init);
+  }
+
+  /* zgody cookies + wtyczka Facebooka (ładowana dopiero po zgodzie) */
+  var KEY='btodk-zgody',ck=$('#cookie');
+  var getC=function(){try{return localStorage.getItem(KEY)}catch(e){return null}};
+  var setC=function(v){try{localStorage.setItem(KEY,v)}catch(e){}};
+  var fbLoad=function(){
+    var fr=$('#fb-frame');if(!fr||$('iframe',fr))return;
+    var w=Math.max(180,Math.min(500,Math.floor(fr.clientWidth))),h=Math.floor(fr.clientHeight);
+    var src='https://www.facebook.com/plugins/page.php?href='+encodeURIComponent(fr.getAttribute('data-fb'))+'&tabs=timeline&width='+w+'&height='+h+'&small_header=false&adapt_container_width=true&hide_cover=false&show_facepile=false';
+    var ifr=document.createElement('iframe');
+    ifr.src=src;ifr.title='Profil Biura Turystycznego Odkrywca na Facebooku';ifr.loading='lazy';
+    ifr.setAttribute('allow','encrypted-media');ifr.setAttribute('scrolling','no');
+    fr.innerHTML='';fr.appendChild(ifr);
+  };
+  var applyC=function(v){
+    if(ck)ck.classList.toggle('on',!v);
+    if(v==='all')fbLoad();
+  };
+  $$('[data-consent]').forEach(function(b){b.addEventListener('click',function(){var v=b.getAttribute('data-consent');setC(v);applyC(v)})});
+  $$('[data-cookies]').forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();if(ck)ck.classList.add('on')})});
+  applyC(getC());
 
   /* formularz kontaktowy (pokazowy) */
   var cf=$('#cform');

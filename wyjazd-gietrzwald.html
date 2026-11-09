@@ -11,7 +11,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css?v=2">
 <style>
 .wylinka-badge{display:inline-flex;align-items:center;gap:.4em;color:inherit;text-decoration:none;font-size:.875em;line-height:1;opacity:.85}
 .wylinka-badge:hover,.wylinka-badge:focus-visible{opacity:1}
@@ -30,22 +30,21 @@
   <div class="wrap">
     <a class="logo" href="index.html" aria-label="Biuro Turystyczne Odkrywca - strona główna"><img src="img/logo-poziome.webp" alt="Biuro Turystyczne Odkrywca" width="600" height="163"></a>
     <nav class="nav" id="nav">
-      <a href="index.html#wyjazdy">Zapisy online</a>
-      <a href="index.html#szkoly">Wycieczki szkolne</a>
-      <a href="index.html#oferta">Dla firm</a>
-      <a href="index.html#wyjazdy" class="on" aria-current="page">Pielgrzymki</a>
+      <a href="wycieczki-szkolne.html">Wycieczki szkolne</a>
+      <a href="index.html#pielgrzymki" class="on" aria-current="page">Pielgrzymki</a>
       <a href="index.html#wyprawy">Wyprawy</a>
+      <a href="index.html#firmy">Dla firm</a>
+      <a href="ubezpieczenia.html">Ubezpieczenia</a>
       <a href="index.html#o-nas">O nas</a>
       <a href="index.html#kontakt">Kontakt</a>
-      <a href="index.html#kontakt" class="btn nav-cta">Zapytaj o wyjazd dla grupy</a>
+      <a href="index.html#kontakt" class="btn nav-cta" data-ask="">Zapytaj o wyjazd</a>
     </nav>
     <a class="hdr-tel" href="tel:+48793125135" aria-label="Zadzwoń: 793 125 135"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"/></svg></span><span class="num">793 125 135</span></a>
     <button class="burger" id="burger" aria-label="Menu" aria-expanded="false" aria-controls="nav"><i></i><i></i><i></i></button>
   </div>
 </header>
-
 <main class="wrap">
-  <div class="crumbs"><a href="index.html">Start</a> / <a href="index.html#wyjazdy">Pielgrzymki</a> / Gietrzwałd, Sokółka, Święta Lipka</div>
+  <div class="crumbs"><a href="index.html">Start</a> / <a href="index.html#pielgrzymki">Pielgrzymki</a> / Gietrzwałd, Sokółka, Święta Lipka</div>
   <div class="t-head">
     <div class="t-when">18-21.09.2026 · 4 dni · bez nocnych przejazdów</div>
     <h1>Pielgrzymka do Gietrzwałdu, Sokółki i Świętej Lipki</h1>
@@ -64,6 +63,7 @@
         <button class="ga n" aria-label="Następne zdjęcie"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg></button>
         <span class="cnt" id="galc">1 / 2</span>
       </div>
+      <div class="thumbs" id="thumbs" aria-label="Miniatury zdjęć"></div>
 
       <div class="facts">
         <div><small>Termin</small><b>18-21.09.2026</b></div>
@@ -173,7 +173,7 @@
         <div class="umowa">
           <h4>Umowa o udział w imprezie turystycznej</h4>
           <dl>
-            <dt>Organizator</dt><dd>Biuro Turystyczne Odkrywca Aleksandra Dąbrowska, Baczków 220, 32-700 Bochnia</dd>
+            <dt>Organizator</dt><dd>Biuro Turystyczne Odkrywca Aleksandra Dąbrowska, Baczków 220, 32-708 Baczków</dd>
             <dt>Impreza</dt><dd>Pielgrzymka Gietrzwałd, Sokółka, Święta Lipka</dd>
             <dt>Termin i wyjazd</dt><dd id="u-term">18-21.09.2026, Nowy Wiśnicz</dd>
             <dt>Uczestnicy</dt><dd id="u-os">-</dd>
@@ -237,18 +237,42 @@
     <p class="demo">Podgląd koncepcji: formularz pokazowy, niczego nie wysyła i nie pobiera płatności.</p>
   </div>
 </dialog>
-
 <footer class="ft">
   <div class="wrap">
     <div class="ft-grid">
-      <div><img src="img/logo-white.webp" alt="Biuro Turystyczne Odkrywca" width="600" height="188" loading="lazy"><p>Baczków 220, 32-700 Bochnia<br>woj. małopolskie</p></div>
-      <div><h4>Oferta</h4><ul><li><a href="index.html#szkoly">Wycieczki szkolne</a></li><li><a href="index.html#oferta">Dla firm</a></li><li><a href="index.html#wyjazdy">Pielgrzymki</a></li><li><a href="index.html#wyprawy">Wyprawy</a></li></ul></div>
-      <div><h4>Informacje</h4><ul><li><a href="index.html#o-nas">O nas</a></li><li><a href="index.html#dokumenty">Dokumenty</a></li><li><a href="index.html#dokumenty">Ubezpieczenia</a></li><li><a href="index.html#kontakt">Polityka prywatności</a></li></ul></div>
+      <div><img src="img/logo-white.webp" alt="Biuro Turystyczne Odkrywca" width="600" height="188" loading="lazy"><p>Biuro Turystyczne Odkrywca Aleksandra Dąbrowska<br>Baczków 220, 32-708 Baczków<br>woj. małopolskie</p></div>
+      <div><h4>Oferta</h4><ul><li><a href="wycieczki-szkolne.html">Wycieczki szkolne</a></li><li><a href="index.html#pielgrzymki">Pielgrzymki</a></li><li><a href="index.html#wyprawy">Wyprawy</a></li><li><a href="index.html#firmy">Dla firm</a></li><li><a href="ubezpieczenia.html">Ubezpieczenia</a></li></ul></div>
+      <div><h4>Informacje</h4><ul><li><a href="index.html#o-nas">O nas</a></li><li><a href="wycieczki-szkolne.html#katalog">Katalog</a></li><li><a href="index.html#dokumenty">Dokumenty</a></li><li><a href="#" data-cookies>Ustawienia cookies</a></li><li><a href="#" onclick="return false">Polityka prywatności</a></li></ul></div>
       <div><h4>Kontakt</h4><ul><li><a href="tel:+48793125135">793 125 135</a></li><li><a href="tel:+48790553892">790 553 892</a></li><li><a href="mailto:biuro@btodkrywca.pl">biuro@btodkrywca.pl</a></li><li><a href="https://www.facebook.com/Biuro-Turystyczne-Odkrywca-360996910980648/" rel="noopener" target="_blank">Facebook</a></li></ul></div>
     </div>
     <div class="ft-bot"><span>© 2026 Biuro Turystyczne Odkrywca</span><a class="wylinka-badge" href="https://wylinka.pl/?utm_source=btodkrywca.pl&amp;utm_medium=stopka&amp;utm_campaign=wykonanie" rel="noopener" title="Strona wykonana przez Wylinka"><svg viewBox="0 0 64 64" aria-hidden="true" focusable="false" fill="currentColor"><path d="M9.8 22.8l-1.2-7.9 2.2-3.7 15.5 4.6-.5 1.5-7.2 5.5 4.7 15.6 5-15.6 7 0 4.1 12.7-4.2-.9-2.6 1.8-.8-2.2-5.3 15.6-4.3 0 .4 .2-2.1 2.8-1.3-1.1 1.1-1.4-3.1 .2-.1-1.7 2.2-.1-5.7-16.5-4.8 .6-.8 3.1 0 .5-.3 .5 .8 2.2-1.6 .5-.4-1.3-.8 1.6-1.5-.8 .8-1.6-1.4 .6-.6-1.6 2.3-.8 .2-.4 1.3-4.8 5.9-.8-2.4-6.9zM15.2 13.7l-.1-.4-.4 .8-.1 .8 .1 1 .1 .4 .3 .7 .3-.9 .1-.7 0-.8z"/><path class="wy-pod" d="M37.1 49.8l-4.5-13.3 2.6-1.8 4.2 .9 .9 2.8 3-9.7 0-.5 .1-.8 3.2-8.4 .5-1 .6-1 .9-1.1 1.3-1 1.1-.7 1.4-.5 1.4-.3 .7 0 .9 0 1.2 .3 1.4 .6 .8 .5 .7 .7 .6 .7 .5 .9 .3 .9 .1 .9 0 .8-.2 .9-.5 .9-.5 .6-.7 .5-.7 .3-.1-.1 0-.1 .5-.5 .3-.7 .2-.5 0-.6-.1-.6-.3-.7-.4-.5-.4-.4-.5-.3-.6-.3-.7 0-.7 .1-.6 .1-.5 .4-.5 .5-.3 .5-.2 .7-.1 1.5-1.4 5.1-.8 3.3-.3 .7-.5 .7-6 17.5 1.9 .1-.1 1.7-3.1-.2 1.1 1.4-1.3 1.1-2.1-2.8 .4-.2z"/><path class="wy-old" d="M40.8 50l.4-.2-4.1 0-4.2-12.5 2.5-1.7 4.3 .9 .6 1.9 .6-1.6 0-.3 2.4-7.8 0-.5 .1-.8 3.2-8.4 .4-.8 .6-.9 .9-1.2 .9-.9 1.3-.8 1.4-.6 1.2-.3 1.4-.1 1.3 .1 .6 .2 .8 .3 1.1 .6 .9 .7 .7 .9 .5 .9 .3 .9 .1 1.1-.1 .9-.3 .9-.4 .7-.6 .7-.6 .4-.6 .2-.1-.1 0-.1 .5-.5 .3-.7 .2-.5 0-.5-.1-.6-.2-.6-.3-.5-.4-.5-.5-.3-.6-.3-.7-.1-.6 0-.6 .1-.6 .3-.6 .5-.3 .4-.2 .5-.1 .5-.1 1.5-1.4 5.1-.8 3.3-.3 .7-.5 .7-6 17.5 1.9 .1-.1 1.7-3.1-.2 1.1 1.4-1.3 1.1zM49.6 17.1l.6 1.7-1.5 1.9 .4 .4 1.8-2.1-.7-2.1zM48.1 28.3l.5 1.8-1.7 1.8 .4 .4 1.9-2-.6-2.2zM37.9 41.7l1.7-1.5-.4-.4-1.7 1.4zM42.6 38.7l-1.5 2.8 1.1 2-1.3 2.6 .5 .2 1.5-2.8-1.1-2 1.4-2.5z"/></svg><span>wykonanie: <b>Wylinka</b></span></a></div>
   </div>
 </footer>
-<script src="app.js" defer></script>
+<dialog class="ask" id="ask" aria-labelledby="ask-h">
+  <div class="ask-in">
+    <div class="bk-t"><div><h2 id="ask-h">Zapytaj o wyjazd</h2><p>Odpowiemy mailem albo telefonicznie, zwykle w dniu roboczym.</p></div><button class="bk-x" type="button" data-close aria-label="Zamknij"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></button></div>
+    <form id="askf" novalidate>
+      <div class="g2">
+        <label class="fl full"><span>Wyjazd</span><input name="wyjazd" id="ask-trip" placeholder="np. Bieszczady, 3 dni"></label>
+        <label class="fl"><span>Imię i nazwisko</span><input name="n" required autocomplete="name"></label>
+        <label class="fl"><span>Telefon</span><input name="t" type="tel" required autocomplete="tel"></label>
+        <label class="fl full"><span>E-mail</span><input name="e" type="email" autocomplete="email"></label>
+        <label class="fl"><span>Szkoła, firma lub parafia</span><input name="g"></label>
+        <label class="fl"><span>Liczba uczestników (ok.)</span><input name="o" inputmode="numeric"></label>
+        <label class="fl full"><span>Proponowany termin</span><input name="d" placeholder="np. maj 2027"></label>
+        <label class="fl full"><span>Wiadomość</span><textarea name="m" placeholder="Klasa, wiek uczestników, pytania do programu"></textarea></label>
+      </div>
+      <button class="btn" type="submit">Wyślij zapytanie</button>
+      <p class="hint">Dane wykorzystamy wyłącznie do odpowiedzi na zapytanie.</p>
+      <p class="hint" style="margin-top:4px">Podgląd: formularz pokazowy, niczego nie wysyła.</p>
+    </form>
+    <div class="ask-ok"><div class="gran"><i></i></div><h3>Dziękujemy za zapytanie</h3><p>W docelowej stronie zapytanie trafi na biuro@btodkrywca.pl, a nadawca dostanie potwierdzenie.</p><button class="btn line" type="button" data-close>Zamknij</button></div>
+  </div>
+</dialog>
+<div class="cookie" id="cookie" role="dialog" aria-label="Zgody na pliki cookies">
+  <p><b>Pliki cookies.</b> Używamy tylko niezbędnych plików cookies. Treści z Facebooka pokażemy wyłącznie za Twoją zgodą. <a class="lnk" href="#" onclick="return false">Polityka prywatności</a></p>
+  <div class="cb"><button class="btn line" type="button" data-consent="min">Tylko niezbędne</button><button class="btn" type="button" data-consent="all">Akceptuję</button></div>
+</div>
+<script src="app.js?v=2" defer></script>
 </body>
 </html>
