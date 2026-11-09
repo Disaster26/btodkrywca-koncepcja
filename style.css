@@ -71,7 +71,7 @@ p{margin:0 0 14px}
 .hero-foto::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,36,58,.82) 0%,rgba(0,36,58,.62) 30%,rgba(0,36,58,.18) 52%,rgba(0,36,58,0) 66%),linear-gradient(0deg,rgba(0,30,50,.5),rgba(0,30,50,0) 40%)}
 .hero-in{position:relative;width:min(var(--w),100% - 32px);margin:0 auto;padding-bottom:clamp(40px,7vh,84px)}
 .hero h1{color:#fff;font-size:clamp(40px,4.1vw,62px);max-width:14ch;margin-bottom:18px}
-.hero .lead{font-size:clamp(18px,1.4vw,21px);max-width:34ch;margin-bottom:28px;color:rgba(255,255,255,.94)}
+.hero .lead{font-size:clamp(18px,1.4vw,21px);max-width:42ch;margin-bottom:28px;color:rgba(255,255,255,.94)}
 .hero .gran{display:none}
 .hero .gran i{width:75px;height:46px}
 .hero-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
