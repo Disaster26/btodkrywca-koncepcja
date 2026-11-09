@@ -614,3 +614,4 @@ button.go:hover{color:var(--blue-d);text-decoration:underline}
   .cookie .cb{gap:8px}
   .cookie .btn{min-height:42px;padding:0 12px;font-size:15px;white-space:nowrap}
 }
+@media (max-width:960px){.ins.top>div:last-child{order:-1;position:static!important}}
